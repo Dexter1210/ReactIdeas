@@ -10,6 +10,11 @@ import {
 } from 'react-router-dom';
 import Counter from './components/counter';
 import Layout from './pages/layout';
+import MultipleStateUpdate from './components/stateupdate-multiple';
+import MultipleStatePropsUpdate from './components/state-multiple-props-update';
+import UseEffectDemo from './components/useeffect-demo';
+import  '@fortawesome/fontawesome-free/css/all.css';
+import Todo from './pages/todo';
 
 
 
@@ -26,10 +31,25 @@ function App() {
           <div>
             <Switch>
               <Route path="/" exact>
-                <h1>Hello React</h1>
+                <div className="jumbotron jumbotron-fluid">
+                <h1 class="text-center display-4">Hello React</h1>
+                </div>
+                
               </Route>
               <Route path="/counter">
                 <Counter/>
+              </Route>
+              <Route path="/todo">
+                <Todo/>
+              </Route>
+              <Route path="/multiple-state-update">
+                <MultipleStateUpdate/>
+              </Route>
+              <Route path="/multiple-state-update-props">
+                <MultipleStatePropsUpdate/>
+              </Route>
+              <Route path="/use-effect-demo">
+                <UseEffectDemo/>
               </Route>
             </Switch>
           </div>
