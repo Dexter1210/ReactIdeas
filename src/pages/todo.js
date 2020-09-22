@@ -33,12 +33,35 @@ export default function Todo(){
         }
         
     }
+
+    function onTodoEdit(title,todoId){
+        let updatedTodos=todos.map(todo =>{
+
+            if(todo.id==todoId){
+                todo.title=title;
+            }
+            return todo;
+        });
+        setTodos([...updatedTodos])
+    }
+    const onToggleTodo=(todo)=>{
+        let updatedTodos=todos.map(t=>{
+            if(todo.id==t.id){
+                todo.completed=!todo.completed;
+            }
+            return t;
+        })
+        setTodos([...updatedTodos]);
+    }
     return(
         <TodoApp>
         <div className="container-fluid">
             <h1>This is Todo</h1>
             <TodoForm onTodoAdded={onTodoAdded}/>
-            <TodoList data={todos} onTodoDelete={onTodoDelete}/>
+            <TodoList data={todos}
+            onTodoEdit={onTodoEdit}
+            onTodoDelete={onTodoDelete}
+            onToggleTodo={onToggleTodo}/>
         </div>
         </TodoApp>
     )

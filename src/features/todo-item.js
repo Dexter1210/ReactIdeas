@@ -1,33 +1,72 @@
-import React from 'react'
+import React, {useState, useRef} from 'react'
 
-export default function TodoItem({todo,onTodoDelete}){
+export default function TodoItem({todo,onTodoDelete, onTodoEdit, onToggleTodo}) {
+  
+  const [edit, toggleEdit] = useState(false);
 
-    const handleDelete= () =>{
-        onTodoDelete(todo);
+  const titleRef = useRef();
+
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      onTodoDelete(todo);
     }
-    return(
+  }
 
-        <div key={todo.id} className="album py-5 bg-light">
-            <div className="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card body">
-                            <h4 class="card-text">{todo.title}
-                             <i onClick ={handleDelete} class="fas fa-trash"></i>
-                            </h4>
+  const handleEdit = (modifiedTodo) => {
+    // let title = prompt("Enter new value: ",modifiedTodo.title); 
+    // if (!title) return;
+    // onTodoEdit(title, todo.id);
+    toggleEdit(ps => !ps);
+  }
 
-                            <div>
-                             {todo.completed ? <span className="badge badge-success">completed</span>
-                                :<span className="badge badge-warning">pending</span> }
-                            </div>
+  const toggleTodo = () => {
+    onToggleTodo(todo);
+  }
 
-                        </div>
-                    </div>
-                </div>
+  const handleKeyUp = (e) => {
+    // enter key = 13
+    // esc key = 27
+    console.log(e.keyCode);
+    if (e.keyCode == 13) {
+      onTodoEdit(titleRef.current.value, todo.id);
+      toggleEdit(ps => !ps);
+    } else if (e.keyCode == 27) {
+      // toggleEdit(!edit)
+      // toggleEdit(p => {return !p});
+      toggleEdit(ps => !ps);
+    }
+  }
 
-            </div>
-            
-           
+  return (
+    <div key={todo.id} className="card todo-item">
+      {
+        !edit  &&
+        <span onDoubleClick={toggleTodo} className="todo-title">{todo.title}</span>
+      }
+
+      {
+        edit  &&
+        <input onKeyUp={handleKeyUp} ref={titleRef} type="text" defaultValue={todo.title} />
+      }
+
+      <div className="d-flex justify-content-between">
+        <div>
+         {todo.completed 
+          ? <span className="badge badge-success">completed</span> 
+          : <span className="badge badge-warning">pending</span>}
         </div>
-    )
+        <div className="d-flex justify-content-between">
+          <i onClick={handleDelete} className="p-4 fas fa-trash"></i>
+          <i onClick={()=>handleEdit(todo)} 
+             className="fas fa-edit p-4"></i>
+          
+          {/* <i onClick={handleEdit(todo)}  
+             class="fas fa-edit p-4"></i> */}
+                          
+          {/* <i onClick={function () { handleEdit(todo)}} 
+             class="fas fa-edit p-4"></i> */}
+        </div>
+      </div>
+    </div>
+  )
 }
