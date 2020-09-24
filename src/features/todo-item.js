@@ -1,14 +1,18 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useContext} from 'react';
+import ProgressBar from '../components/progress-bar';
+import {TodoContext} from '../context/todo-context';
 
-export default function TodoItem({todo,onTodoDelete, onTodoEdit, onToggleTodo}) {
+export default function TodoItem({todo}) {
   
   const [edit, toggleEdit] = useState(false);
+  const todoProvider = useContext(TodoContext);
+  
 
   const titleRef = useRef();
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this item?")) {
-      onTodoDelete(todo);
+      todoProvider.onTodoDelete(todo);
     }
   }
 
@@ -20,7 +24,7 @@ export default function TodoItem({todo,onTodoDelete, onTodoEdit, onToggleTodo}) 
   }
 
   const toggleTodo = () => {
-    onToggleTodo(todo);
+    todoProvider.onToggleTodo(todo);
   }
 
   const handleKeyUp = (e) => {
@@ -28,7 +32,7 @@ export default function TodoItem({todo,onTodoDelete, onTodoEdit, onToggleTodo}) 
     // esc key = 27
     console.log(e.keyCode);
     if (e.keyCode == 13) {
-      onTodoEdit(titleRef.current.value, todo.id);
+      todoProvider.onTodoEdit(titleRef.current.value, todo.id);
       toggleEdit(ps => !ps);
     } else if (e.keyCode == 27) {
       // toggleEdit(!edit)
@@ -37,11 +41,22 @@ export default function TodoItem({todo,onTodoDelete, onTodoEdit, onToggleTodo}) 
     }
   }
 
+  const toggleBookmark = () => {
+    todoProvider.onToggleBookmark(todo);
+  }
+
+  let bookmarkClass = todo.bookmarked 
+      ? "fas fa-bookmark animate__animated animate__swing" : "far fa-bookmark";
+
   return (
     <div key={todo.id} className="card todo-item">
       {
         !edit  &&
-        <span onDoubleClick={toggleTodo} className="todo-title">{todo.title}</span>
+        <div>
+          <span onDoubleClick={toggleTodo} className="todo-title">{todo.title}</span>
+          <i onClick={toggleBookmark} 
+              className={`p-4 ${bookmarkClass}`}></i>
+        </div>
       }
 
       {
@@ -59,14 +74,13 @@ export default function TodoItem({todo,onTodoDelete, onTodoEdit, onToggleTodo}) 
           <i onClick={handleDelete} className="p-4 fas fa-trash"></i>
           <i onClick={()=>handleEdit(todo)} 
              className="fas fa-edit p-4"></i>
-          
-          {/* <i onClick={handleEdit(todo)}  
-             class="fas fa-edit p-4"></i> */}
-                          
-          {/* <i onClick={function () { handleEdit(todo)}} 
-             class="fas fa-edit p-4"></i> */}
         </div>
       </div>
+      <ProgressBar 
+        percent={todo.percentage_completed} 
+        width={400}
+        height={20}
+      />
     </div>
   )
 }

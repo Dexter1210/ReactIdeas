@@ -1,30 +1,35 @@
-import React, { useState } from 'react'
+import React, {useState, useRef, useEffect} from 'react';
 
-export default function TodoForm(prop){
-    const[todoTitle,setTodoTitle]=useState("");
-    const handleChange=(e) => {
-            setTodoTitle(e.target.value)
-        
-    }
-    const handleSubmit= (e) => {
-        e.preventDefault();
-        if(todoTitle!="")
-            prop.onTodoAdded(todoTitle);
-        else
-            alert("The title can't be empty");
-        setTodoTitle("");
-    }
-    return(
-        <form onSubmit={handleSubmit}>
-            <div class="form-group">
-            <input type="text" 
-            onChange={handleChange} 
-            value={todoTitle}
-             placeholder="what do you want want to today?"/>
-            </div>
-            
-            
-            <button type="submit" className="btn btn-success">Submit</button>
-        </form>
-    )
+export default function TodoForm(prop) {
+  const [todoTitle, setTodoTitle] =  useState("");
+  const titleRef = useRef();
+
+  // Run only once : Set focus to title input
+  useEffect(() => {
+    titleRef.current.focus();
+  }, [])
+  
+  const handleChange = (e) => {
+    setTodoTitle(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (todoTitle.length <= 0) return;
+    prop.onTodoAdded(todoTitle);
+    setTodoTitle("");
+  }
+
+  return (
+   <form onSubmit={handleSubmit} >
+     <input type="text"
+      ref = {titleRef}
+      className="w-75" 
+      onChange={handleChange}
+      value={todoTitle}
+      placeholder="what do you want to do today?"/>
+
+     <button type="submit">submit</button>
+   </form>
+  )
 }

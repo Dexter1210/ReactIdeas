@@ -1,20 +1,28 @@
 import React from 'react';
 
-import{
-    NavLink
-}from 'react-router-dom';
+import {
+  NavLink
+} from 'react-router-dom';
 
-export default function Layout(){
-    return(
-        <nav className="navbar navbar-dark bg-primary">
-             
-            <NavLink className="navbar-brand" to="/"><i class="fas fa-house-user"></i>Home</NavLink>
-            <NavLink className="navbar-brand" to="/todo"><i class="fas fa-clipboard-list"></i>To do</NavLink>
-            <NavLink className="navbar-brand" to="/counter"><i class="fas fa-stopwatch"></i>Counter</NavLink>
-            <NavLink className="navbar-brand" to="/multiple-state-update">Multiple state update</NavLink>
-            <NavLink className="navbar-brand" to="/multiple-state-update-props">Multiple state update props</NavLink>
-            <NavLink className="navbar-brand" to="/use-effect-demo"><i class="fab fa-audible"></i>Use Effect Demo</NavLink>
-        </nav>
 
-    )
+export default function Layout() {
+  return (
+    <nav className="navbar navbar-light navbar-expand-lg bg-success">
+      <NavLink  exact className="navbar-brand" to="/">Home</NavLink>
+      <button class="navbar-toggler" type="button" 
+          data-toggle="collapse" 
+          data-target="#top-nav" 
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="top-nav" className="collapse navbar-collapse">
+        <NavLink className="navbar-brand" to="/todo">Todo</NavLink>
+        <NavLink className="navbar-brand" to="/usereducer">useReducer Demo</NavLink>
+        <NavLink className="navbar-brand" to="/counter">Counter</NavLink>
+        <NavLink className="navbar-brand" to="/multple-state">Multiple State Update</NavLink>
+        <NavLink className="navbar-brand" to="/multple-state-props">Multiple State Props Update</NavLink>
+        <NavLink className="navbar-brand" to="/useeffect">useEffect Demo</NavLink>
+      </div>
+    </nav>
+  )
 }
